@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Music Player with Live Clock</title>
+  <link rel="icon" href="favicon.gif" type="image/gif">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-image: url("backdrop.gif");
+      background-repeat: repeat;
+      background-size: cover;
+    }
+
+    #clock {
+      font-size: 72px;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 0 0 5px #fff;
+    }
+
+    #music-player {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    audio {
+      width: 300px;
+    }
+
+    #upload-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #3498db41;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="clock"></div>
+
+  <div id="music-player">
+    <audio id="audio-player" controls>
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <input type="file" id="file-input" style="display: none;">
+  <label for="file-input" id="upload-btn">Upload Music</label>
+
+  <script>
+    function updateTime() {
+      var now = new Date();
+      var hours = now.getHours();
+      var period = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      var minutes = now.getMinutes().toString().padStart(2, '0');
+      var seconds = now.getSeconds().toString().padStart(2, '0');
+      var timeString = hours + ":" + minutes + ":" + seconds + " " + period;
+      document.getElementById("clock").textContent = timeString;
+    }
+
+    setInterval(updateTime, 1000);
+
+    document.getElementById("file-input").addEventListener("change", function(event) {
+      var file = event.target.files[0];
+      var audioPlayer = document.getElementById("audio-player");
+      audioPlayer.src = URL.createObjectURL(file);
+      audioPlayer.play();
+
+      console.log("Played music:", file.name);
+    });
+  </script>
+</body>
+</html>
